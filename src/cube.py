@@ -24,18 +24,18 @@ class Cube:
     # Array Order = [Top, Left, Mid, Right, Back, Bottom]
 
     def __init__(self):
-        white = [[4, 4, 5], [3, 0, 2], [5, 3, 5]]
-        blue =  [[0, 0, 2], [4, 4, 5], [3, 3, 0]]
-        orange = [[1, 5, 1], [2, 3, 2], [1, 4, 4]]
-        green = [[3, 0, 4], [4, 1, 1], [2, 5, 0]]
-        red = [[2, 5, 3], [2, 2, 0], [2, 0, 4]]
-        yellow = [[3, 3, 0], [1, 5, 1], [5, 1, 1]]
+        white = [[5, 4, 5], [1, 0, 5], [3, 0, 1]]
+        blue =  [[1, 3, 0], [2, 4, 5], [1, 4, 4]]
+        orange = [[4, 3, 0], [2, 3, 1], [2, 0, 2]]
+        green = [[3, 3, 4], [0, 1, 0], [4, 1, 3]]
+        red = [[3, 5, 2], [2, 2, 1], [5, 2, 2]]
+        yellow = [[0, 4, 5], [3, 5, 5], [0, 4, 4]]
         self.cube = [white,
-                            blue,
-                            orange,
-                            green,
-                            red,
-                            yellow]
+                     blue,
+                     orange,
+                     green,
+                     red,
+                     yellow]
         self.SolveSteps = []
 
     def assignFace(self, faceColor):

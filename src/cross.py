@@ -38,5 +38,6 @@ def orientEdge01(cube, color):
             cube.forward(color)
             cube.right(color)
             cube.forwardPrime(color)
+    # elif cube.checkForMatchCenter(cube.cube[0][2][1], ):
     # continue here for vase if corresponding piece == center color
     # elif cube.checkForMatchCenter(cube.cube[0][2][1], 2):
