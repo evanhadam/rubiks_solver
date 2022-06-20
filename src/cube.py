@@ -24,12 +24,12 @@ class Cube:
     # Array Order = [Top, Left, Mid, Right, Back, Bottom]
 
     def __init__(self):
-        white = [[5, 4, 5], [1, 0, 5], [3, 0, 1]]
-        blue =  [[1, 3, 0], [2, 4, 5], [1, 4, 4]]
-        orange = [[4, 3, 0], [2, 3, 1], [2, 0, 2]]
-        green = [[3, 3, 4], [0, 1, 0], [4, 1, 3]]
-        red = [[3, 5, 2], [2, 2, 1], [5, 2, 2]]
-        yellow = [[0, 4, 5], [3, 5, 5], [0, 4, 4]]
+        white = [[0, 3, 0], [3, 0, 2], [4, 2, 3]]
+        blue =  [[3, 0, 0], [5, 4, 5], [3, 0, 5]]
+        orange = [[2, 1, 4], [2, 3, 3], [3, 4, 5]]
+        green = [[5, 4, 1], [5, 1, 5], [2, 0, 5]]
+        red = [[2, 1, 4], [1, 2, 4], [1, 3, 1]]
+        yellow = [[1, 0, 4], [2, 5, 1], [0, 4, 1]]
         self.cube = [white,
                      blue,
                      orange,
@@ -54,8 +54,14 @@ class Cube:
         self.cube[l] = temp2
         self.cube[i] = temp3
 
-    def rotate0153(self, color):
+    def rotate0153(self):
         self.rotate(0, 1, 5, 3)
+        self.shiftSideCounterClock(0)
+        self.shiftSideCounterClock(1)
+        self.shiftSideCounterClock(2)
+        self.shiftSideCounterClock(3)
+        self.shiftSideClock(4)
+        self.shiftSideCounterClock(5)
         
     # shifts the face(not pieces attached) 180 degrees clockwise
     def shiftSide180(self, sidePosition):
@@ -110,6 +116,32 @@ class Cube:
             self.shiftSideCounterClock(1)
             self.shiftSideClock(3)
 
+        if self.cube[5][1][1] == 0:
+            for i in range(2):
+                self.rotate0153()
+
+    # shifts the cube back into it's default orientation when white isn't on the top or bottom(centers are in this order: white, blue, orange, green, red, yellow)
+    def shiftWhiteToTop(self):
+        if self.cube[1][1][1] == 0:
+            for i in range(3):
+                self.rotate0153()
+        elif self.cube[2][1][1] == 0:
+            for i in range(3):
+                self.rotate(0, 2, 5, 4)
+                self.shiftSideClock(1)
+                self.shiftSideCounterClock(3)
+                self.shiftSide180(0)
+                self.shiftSide180(4)
+        elif self.cube[3][1][1] == 0:
+            self.rotate0153(self.cube[2][1][1])
+        elif self.cube[4][1][1] == 0:
+            self.rotate(0, 2, 5, 4)
+            self.shiftSideClock(1)
+            self.shiftSideCounterClock(3)
+            self.shiftSide180(0)
+            self.shiftSide180(4)
+            
+
     # twists a face + pieces attaached 90 degrees clockwise
     def turnSideClock(self, color):
         self.shiftFaceToFront(color)
@@ -152,7 +184,7 @@ class Cube:
     def left(self, color):
         self.shiftFaceToFront(color)
         turnColor = self.cube[1][1][1]
-        self.turnSideCounterClock(turnColor)
+        self.turnSideClock(turnColor)
         self.shiftFaceToFront(self.cube[3][1][1])
         self.solveSteps.append("L " + self.convertNumToColor(color))
 
@@ -160,9 +192,18 @@ class Cube:
     def leftPrime(self, color):
         self.shiftFaceToFront(color)
         turnColor = self.cube[1][1][1]
-        self.turnSideClock(turnColor)
+        self.turnSideCounterClock(turnColor)
         self.shiftFaceToFront(self.cube[3][1][1])
         self.solveSteps.append("L' " + self.convertNumToColor(color))
+
+    # L2
+    def left2(self, color):
+        for i in range(2):
+            self.shiftFaceToFront(color)
+            turnColor = self.cube[1][1][1]
+            self.turnSideClock(turnColor)
+            self.shiftFaceToFront(self.cube[3][1][1])
+        self.solveSteps.append("L2 " + self.convertNumToColor(color))
 
     # R
     def right(self, color):
@@ -180,6 +221,14 @@ class Cube:
         self.shiftFaceToFront(self.cube[1][1][1])
         self.solveSteps.append("R' " + self.convertNumToColor(color))
 
+    # R2
+    def right2(self, color):
+        for i in range(2):
+            self.shiftFaceToFront(color)
+            turnColor = self.cube[3][1][1]
+            self.turnSideClock(turnColor)
+            self.shiftFaceToFront(self.cube[1][1][1])
+        self.solveSteps.append("R2 " + self.convertNumToColor(color))
     # U
     def up(self, color):
         self.shiftFaceToFront(color)
@@ -196,6 +245,15 @@ class Cube:
         self.shiftFaceToFront(self.cube[5][1][1])
         self.solveSteps.append("U' " + self.convertNumToColor(color))
 
+    # U2
+    def up2(self, color):
+        for i in range(2):
+            self.shiftFaceToFront(color)
+            turnColor = self.cube[0][1][1]
+            self.turnSideClock(turnColor)
+            self.shiftFaceToFront(self.cube[5][1][1])
+        self.solveSteps.append("U2 " + self.convertNumToColor(color))
+
     # D
     def down(self, color):
         self.shiftFaceToFront(color)
@@ -211,6 +269,14 @@ class Cube:
         self.turnSideCounterClock(turnColor)
         self.shiftFaceToFront(self.cube[0][1][1])
         self.solveSteps.append("D' " + self.convertNumToColor(color))
+
+    def down2(self, color):
+        for i in range(2):
+            self.shiftFaceToFront(color)
+            turnColor = self.cube[5][1][1]
+            self.turnSideClock(turnColor)
+            self.shiftFaceToFront(self.cube[0][1][1])
+        self.solveSteps.append("D2 " + self.convertNumToColor(color))
 
     def checkCenterColor(self, i):
         return self.cube[i][1][1]

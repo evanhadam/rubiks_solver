@@ -4,6 +4,6 @@ import cross
 test = Cube()
 
 print(test.cube)
-cross.orientWhiteEdge(test, 4)
-test.shiftFaceToFront(3)
+#cross.printWhiteEdges(test)
+cross.cross(test)
 print(test.cube)
